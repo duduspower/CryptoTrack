@@ -15,9 +15,10 @@ public class CurrencyService {
     }
 
     public String giveAdvancedKey(String simpleId){
+
         List<Currencies> currencies = repo.readCurenciesBySimplyId(simpleId);
         Currencies currency = currencies.get(0);
-        System.out.println("Advanced ID : " + currency.getAdvancedId());
+
         return currency.getAdvancedId();
     }
 

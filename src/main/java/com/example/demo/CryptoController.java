@@ -34,12 +34,14 @@ public class CryptoController{
         return ResponseEntity.ok(repo.save(crypto));
     }
 
-    private Crypto getApiData(String simpleId) throws IOException, InterruptedException {
+    public Crypto getApiData(String simpleId) throws IOException, InterruptedException {  //pobiera dane z api i przerabia na obiekt
+
         String searchId = currencyService.giveAdvancedKey(simpleId);
         System.out.println("Search ID : " + searchId);
+
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create("https://bravenewcoin.p.rapidapi.com/market-cap?assetId="  + searchId + "&percentChange=false"))
-                .header("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik5EVXhNRGhHT0VReE56STVOelJCTTBJM1FrUTVOa0l4TWtRd1FrSTJSalJFTVRaR1F6QTBOZyJ9.eyJpc3MiOiJodHRwczovL2F1dGguYnJhdmVuZXdjb2luLmNvbS8iLCJzdWIiOiJvQ2RRb1pvSTk2RVJFOUhZM3NRN0ptYkFDZkJmNTVSWUBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9hcGkuYnJhdmVuZXdjb2luLmNvbSIsImlhdCI6MTY1MDE1MjE3MywiZXhwIjoxNjUwMjM4NTczLCJhenAiOiJvQ2RRb1pvSTk2RVJFOUhZM3NRN0ptYkFDZkJmNTVSWSIsInNjb3BlIjoicmVhZDppbmRleC10aWNrZXIgcmVhZDpyYW5raW5nIHJlYWQ6bXdhIHJlYWQ6Z3dhIHJlYWQ6YWdncmVnYXRlcyByZWFkOm1hcmtldCByZWFkOmFzc2V0IHJlYWQ6b2hsY3YgcmVhZDptYXJrZXQtY2FwIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.nzYKVMPjHRdbhfAQuczJRwSuPyIN1hLfMzHDeKEtKNdSvClwoXA7d9-EU_W07Lj25nlnBg8JUqEIc3OcVPQc2YM-iiR4A9fBtLFockd7zLsIh5UgJBmW50RghEURXaI-03Aptyadqzx7RLVvdOYN8o_QWo1nQZ0X7fOYtA7Pcm61AbD8oK06Mv2Bva-hwSTGeQnLtKxzGnliWc9-LeWoC7IB9uZw8u5hONam7boFvyxgCOSRGl7yCj0S_9QsZBBFHYAK3Q5MXeYLrZR0G2YdoUET2tbZSB82J1B4oKGSQgtQ4gxIeLlet70FLeh7uRokFN3cPXhHwFF1_dxT2dFskQ")
+                .uri(URI.create("https://bravenewcoin.p.rapidapi.com/market-cap?assetId=" + searchId))
+                .header("Authorization", "Bearer eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCIsImtpZCI6Ik5EVXhNRGhHT0VReE56STVOelJCTTBJM1FrUTVOa0l4TWtRd1FrSTJSalJFTVRaR1F6QTBOZyJ9.eyJpc3MiOiJodHRwczovL2F1dGguYnJhdmVuZXdjb2luLmNvbS8iLCJzdWIiOiJvQ2RRb1pvSTk2RVJFOUhZM3NRN0ptYkFDZkJmNTVSWUBjbGllbnRzIiwiYXVkIjoiaHR0cHM6Ly9hcGkuYnJhdmVuZXdjb2luLmNvbSIsImlhdCI6MTY1MDIyOTkzOCwiZXhwIjoxNjUwMzE2MzM4LCJhenAiOiJvQ2RRb1pvSTk2RVJFOUhZM3NRN0ptYkFDZkJmNTVSWSIsInNjb3BlIjoicmVhZDppbmRleC10aWNrZXIgcmVhZDpyYW5raW5nIHJlYWQ6bXdhIHJlYWQ6Z3dhIHJlYWQ6YWdncmVnYXRlcyByZWFkOm1hcmtldCByZWFkOmFzc2V0IHJlYWQ6b2hsY3YgcmVhZDptYXJrZXQtY2FwIiwiZ3R5IjoiY2xpZW50LWNyZWRlbnRpYWxzIn0.bZjAhOVr9Bta-4VNTsoA-sg38JSp0uPgxw3ICia6f20RVDYER_X8EW_v2m_58vS9N6z-I4rDXcK3uH3aJ_tKevhDBlxjFDUpDCP1eOh2Mziu2H7URAL3m4QVmR4Kv2XRo9tBb7ynNldzopdob6EG9_YGtoKxVmMhDXBM9ciI3rWB79FcsB2TGakGrfACeEfYDkEtFXh5AUvTGdmnFVIddQegfgSti1HyOw3y4qoC77L_e_bPJlhcer5tRDho_fOSKakRW10Mwhs1P3Bpv2aQuykWr8qaLaB48Mplt7drqp1rpCSOXsqAWhEXhZ_EaU5w9cX2kaTe7LYf5Wro36VJ1Q")
                 .header("X-RapidAPI-Host", "bravenewcoin.p.rapidapi.com")
                 .header("X-RapidAPI-Key", "2e8087b636msh384464746937759p1941f9jsn9c7a58296c33")
                 .method("GET", HttpRequest.BodyPublishers.noBody())
@@ -48,6 +50,7 @@ public class CryptoController{
 
         String answer = response.body();
         char ch = '"';
+        System.out.println(answer);
 
         answer = answer.replace("[","");
         answer = answer.replace("]", "");
@@ -72,8 +75,10 @@ public class CryptoController{
         String id = answers[0];
         String assetId = answers[1];
         String timestamp = answers[2];
+
         int marketCapRank = Integer.parseInt(answers[3]);
         int volumeRank = Integer.parseInt(answers[4]);
+
         double price = Double.parseDouble(answers[5]);
         double volume = Double.parseDouble(answers[6]);
         double totalSupply = Double.parseDouble(answers[7]);
