@@ -19,18 +19,27 @@ public class CryptoService {
     }
 
     @Scheduled(fixedDelay = 1800000)  //wykonuje co 30min
+    public void getAvrPrice() throws IOException, InterruptedException {
+        getDataFixedDelay("btc");
+        getDataFixedDelay("eth");
+        getDataFixedDelay("ape");
+        getDataFixedDelay("cro");
+    }
+
+
+
     public void getDataFixedDelay(String simplyId) throws IOException, InterruptedException {
 
     CryptoController cryptoController = new CryptoController(repo,currencyService);
-    Crypto crypto = cryptoController.getApiData("btc");
+    Crypto crypto = cryptoController.getApiData(simplyId);
 
-    getAvrPrice(simplyId);
+    calculateAvrPrice(simplyId);
     repo.save(crypto);
     crypto.toString();
     }
 
-    public void getAvrPrice(String simplyId){
-        List<Crypto> cryptos = repo.readCryptoByName("btc");
+    public void calculateAvrPrice(String simplyId){
+        List<Crypto> cryptos = repo.readCryptoByName(simplyId);
         ArrayList<Double> advPrice = new ArrayList<>();
 
         Double finalAvrPrice = Double.valueOf(0);
@@ -45,6 +54,6 @@ public class CryptoService {
 
         finalAvrPrice = finalAvrPrice / advPrice.size();
 
-        System.out.println("Average price : " + finalAvrPrice);
+        System.out.println("Average price of " + simplyId + ": " + finalAvrPrice);
     }
 }
